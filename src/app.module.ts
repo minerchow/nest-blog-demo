@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
+import { MenuModule } from './menu/menu.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: [envConfig.path] }),
@@ -26,7 +27,7 @@ import { TagModule } from './tag/tag.module';
         timezone: '+08:00',
         synchronize: true,
         autoLoadEntities: true,
-        logging:false
+        logging:true
       }),
     }),
     PostsModule,
@@ -34,6 +35,7 @@ import { TagModule } from './tag/tag.module';
     AuthModule,
     CategoryModule,
     TagModule,
+    MenuModule
   ],
   controllers: [AppController],
   providers: [AppService],

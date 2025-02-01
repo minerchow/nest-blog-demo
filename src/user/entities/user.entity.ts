@@ -41,6 +41,8 @@ export class User {
   @Column({ type: 'bigint', default: 0 }) 
   tokenVersion: number;
   
+  @Column({ type: 'json', nullable: false })
+  accessibleUrls: string[];
 
   @OneToMany(() => PostsEntity, (post) => post.author)
   posts: PostsEntity[];

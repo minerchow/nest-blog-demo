@@ -12,4 +12,8 @@ export class CreateUserDto {
 
   @ApiProperty({ description: '用户角色' })
   role: string;
+
+  @ApiProperty({ description: '菜单' })
+  accessibleUrls: string[];
+
 }
