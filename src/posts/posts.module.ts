@@ -2,6 +2,7 @@ import { AuthModule } from './../auth/auth.module';
 import { MDMiddleware } from './../core/middleware/md.middleware';
 import { TagModule } from './../tag/tag.module';
 import { CategoryModule } from './../category/category.module';
+import { UserModule } from './../user/user.module';
 import { PostsEntity } from './posts.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
@@ -19,6 +20,7 @@ import { PostsService } from './posts.service';
     CategoryModule,
     TagModule,
     AuthModule,
+    UserModule
   ],
   controllers: [PostsController],
   providers: [PostsService],

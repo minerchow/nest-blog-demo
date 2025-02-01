@@ -22,12 +22,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return request;
   }
 
-  handleRequest<TUser>(err: any, user: TUser, info: any, context: ExecutionContext, status?: any): TUser {
-    if (err || !user) {
-      throw new UnauthorizedException('身份验证失败');
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const canActivateResult = await super.canActivate(context) as boolean;
+    if (!canActivateResult) {
+      return false;
     }
 
-    // 获取请求中的 AccessToken
     const request = this.getRequest(context);
     const token = request.headers.authorization?.replace('Bearer ', '');
     if (!token) {
@@ -37,30 +37,22 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     try {
       // 解码 AccessToken 以获取 tokenVersion
       const decoded = this.jwtService.decode(token) as { id: number; tokenVersion: number };
-      console.log("decoded",decoded)
       if (!decoded || !decoded.id || !decoded.tokenVersion) {
         throw new UnauthorizedException('无效的 AccessToken');
       }
-      console.log(this.userService)
       // 从数据库中获取用户的最新 tokenVersion
-      this.userService.findOne(decoded.id).then((dbUser) => {
-        console.log("db",dbUser);
-        if (!dbUser) {
-          throw new UnauthorizedException('用户不存在');
-        }
-
-        // 比较 tokenVersion
-        if (dbUser.tokenVersion !== decoded.tokenVersion) {
-          throw new UnauthorizedException('Token 已失效，请刷新');
-        }
-      }).catch((error) => {
-        throw new UnauthorizedException('Token 验证失败1');
-      });
+      const dbUser = await this.userService.findOne(decoded.id);
+      if (!dbUser) {
+        throw new UnauthorizedException('用户不存在');
+      }
+      // 比较 tokenVersion
+      if (dbUser.tokenVersion != decoded.tokenVersion) {
+        throw new UnauthorizedException('Token 已失效，请刷新');
+      }
     } catch (error) {
-      console.log(error)
-      throw new UnauthorizedException('Token 验证失败2');
+      throw new UnauthorizedException('Token 验证失败');
     }
 
-    return user;
+    return true;
   }
 }

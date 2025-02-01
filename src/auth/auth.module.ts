@@ -10,7 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/user/user.module';
 import { HttpModule } from '@nestjs/axios';
-
+import { JwtAuthGuard } from './jwt-auth.guard';
 // const jwtModule = JwtModule.register({
 //     secret:"xxx"
 // })

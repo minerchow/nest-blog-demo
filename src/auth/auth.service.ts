@@ -23,7 +23,7 @@ export class AuthService {
   public apiServer = 'https://api.weixin.qq.com';
 
   createToken(user: Partial<User>) {
-    return this.jwtService.sign(user,{ expiresIn: '15m' });
+    return this.jwtService.sign(user,{ expiresIn: '2h' });
   }
 
    // 创建RefreshToken
@@ -128,9 +128,11 @@ export class AuthService {
         // if (!user || user.refreshToken !== refreshToken) {
         //   throw new BadRequestException('无效的RefreshToken');
         // }
-        console.log("user.tokenVersion",user.tokenVersion);
-        user.tokenVersion++; 
-        console.log("user.tokenVersion2",user.tokenVersion);
+        // console.log("user.tokenVersion",user.tokenVersion);
+        // user.tokenVersion++; 
+        // console.log("user.tokenVersion2",user.tokenVersion);
+        // await this.userService.updateUser(user);
+        user.tokenVersion = Math.floor(Date.now() / 1000); 
         await this.userService.updateUser(user);
         const newAccessToken = this.createToken({
           id: user.id,

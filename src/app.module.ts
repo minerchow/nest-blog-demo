@@ -26,7 +26,7 @@ import { TagModule } from './tag/tag.module';
         timezone: '+08:00',
         synchronize: true,
         autoLoadEntities: true,
-        logging:true
+        logging:false
       }),
     }),
     PostsModule,
