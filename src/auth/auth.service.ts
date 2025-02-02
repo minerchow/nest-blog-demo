@@ -12,12 +12,14 @@ import {
 import { lastValueFrom, map, Observable } from 'rxjs';
 //@ts-ignore
 import { AxiosResponse } from 'axios';
+import { RedisService  } from 'src/redis/redis.service';
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
     private httpService: HttpService,
+    private readonly redisService: RedisService
   ) {}
   private accessTokenInfo: AccessTokenInfo;
   public apiServer = 'https://api.weixin.qq.com';
@@ -133,7 +135,8 @@ export class AuthService {
         // console.log("user.tokenVersion2",user.tokenVersion);
         // await this.userService.updateUser(user);
         user.tokenVersion = Math.floor(Date.now() / 1000); 
-        await this.userService.updateUser(user);
+        // await this.userService.updateUser(user);
+        this.redisService.setWithExpiry(`Token_${user.id}`, user.tokenVersion, 7200); // 2h
         const newAccessToken = this.createToken({
           id: user.id,
           username: user.username,

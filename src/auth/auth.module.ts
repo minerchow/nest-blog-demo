@@ -11,6 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/user/user.module';
 import { HttpModule } from '@nestjs/axios';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { RedisModule } from 'src/redis/redis.module';
 // const jwtModule = JwtModule.register({
 //     secret:"xxx"
 // })
@@ -32,6 +33,7 @@ const jwtModule = JwtModule.registerAsync({
     PassportModule,
     jwtModule,
     UserModule,
+    RedisModule
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStorage, JwtStorage],

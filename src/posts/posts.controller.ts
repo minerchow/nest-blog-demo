@@ -46,7 +46,7 @@ export class PostsController {
    * 获取所有文章
    */
   @ApiOperation({ summary: '获取文章列表' })
-  @Roles('visitor')
+  @Roles('root')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('/list')
   async findAll(

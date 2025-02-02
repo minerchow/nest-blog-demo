@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
 import { MenuModule } from './menu/menu.module';
+import { RedisModule } from './redis/redis.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: [envConfig.path] }),
@@ -27,7 +28,7 @@ import { MenuModule } from './menu/menu.module';
         timezone: '+08:00',
         synchronize: true,
         autoLoadEntities: true,
-        logging:true
+        logging:false
       }),
     }),
     PostsModule,
@@ -35,7 +36,8 @@ import { MenuModule } from './menu/menu.module';
     AuthModule,
     CategoryModule,
     TagModule,
-    MenuModule
+    MenuModule,
+    RedisModule
   ],
   controllers: [AppController],
   providers: [AppService],

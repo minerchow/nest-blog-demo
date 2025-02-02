@@ -13,14 +13,15 @@ import {
 } from '@nestjs/common';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-
+import { RedisModule } from 'src/redis/redis.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([PostsEntity]),
     CategoryModule,
     TagModule,
     AuthModule,
-    UserModule
+    UserModule,
+    RedisModule
   ],
   controllers: [PostsController],
   providers: [PostsService],

@@ -6,10 +6,11 @@ import { User } from './../user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
+import { RedisModule } from 'src/redis/redis.module';
 @Module({
   imports: [TypeOrmModule.forFeature([User, MenuEntity]), 
     AuthModule,
-    UserModule],
+    UserModule,RedisModule],
   controllers: [MenuController],
   providers: [MenuService]
 })
