@@ -35,15 +35,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       throw new UnauthorizedException('未提供 AccessToken');
     }
    
-    try {
+ 
       // 解码 AccessToken 以获取 tokenVersion
-      const decoded = this.jwtService.decode(token) as { id: number; tokenVersion: number };
-      if (!decoded || !decoded.id || !decoded.tokenVersion) {
+      const decoded = this.jwtService.verify(token) as { id: number; tokenVersion: number };
+      console.log("de",decoded)
+      if (!decoded  || !decoded.tokenVersion) {
         throw new UnauthorizedException('无效的 AccessToken');
       }
       // 从数据库中获取用户的最新 tokenVersion
       const dbUser = await this.userService.findOne(decoded.id);
-      console.log(await this.redisService.get(`Token_${decoded.id}`))
+      // console.log("dbuser",dbUser)
+      // console.log(await this.redisService.get(`Token_${decoded.id}`))
       const tokenVer = await this.redisService.get(`Token_${decoded.id}`);
       if (!dbUser) {
         throw new UnauthorizedException('用户不存在');
@@ -55,9 +57,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       if(parseInt(tokenVer) != decoded.tokenVersion){
         throw new UnauthorizedException('Token 已失效，请刷新');
       }
-    } catch (error) {
-      throw new UnauthorizedException('Token 验证失败');
-    }
+    
 
     return true;
   }

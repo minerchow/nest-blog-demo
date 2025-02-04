@@ -34,18 +34,21 @@ export class AuthService {
   }
 
   async login(user: Partial<User>) {
+    const users = await this.userService.findOne(user.id);
+    users.tokenVersion = Math.floor(Date.now() / 1000); 
     const token = this.createToken({
       id: user.id,
       username: user.username,
       role: user.role,
+      tokenVersion: users.tokenVersion
     });
-
     const refreshToken = this.createRefreshToken({
       id: user.id,
       username: user.username,
       role: user.role,
+      tokenVersion: users.tokenVersion
     });
-
+    this.redisService.setWithExpiry(`Token_${user.id}`, users.tokenVersion, 7200); // 2h
     return { accessToken:token , refreshToken };
   }
 
@@ -149,6 +152,22 @@ export class AuthService {
         throw new BadRequestException('无效的RefreshToken');
       }
     }
+
+     // 获取游客token
+  async getGuestToken() {
+    // 模拟游客用户信息
+    const guestUser = {
+      id: 0, // 游客用户ID，可自定义
+      username: 'guest',
+      role: 'guest',
+      tokenVersion: Math.floor(Date.now() / 1000)
+    };
+
+    const guestToken = this.createToken(guestUser);
+   
+
+    return { accessToken: guestToken };
+  }
 
   isExpires(access) {
     return Date.now() - access.getTime > access.expiresIn * 1000;

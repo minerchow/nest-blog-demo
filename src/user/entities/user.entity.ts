@@ -9,7 +9,7 @@ import {
 import * as bcrypt from 'bcryptjs';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostsEntity } from 'src/posts/posts.entity';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 @Entity('user')
 export class User {
   @ApiProperty({ description: '用户id' })

@@ -63,4 +63,10 @@ export class AuthController {
   async refreshAccessToken(@Body('refreshToken') refreshToken: string) {
     return this.authService.refreshAccessToken(refreshToken);
   }
+
+  
+  @Get('guest-token')
+  async getGuestToken() {
+    return this.authService.getGuestToken();
+  }
 }

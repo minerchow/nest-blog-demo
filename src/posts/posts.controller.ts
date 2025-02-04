@@ -24,7 +24,7 @@ import { CreatePostDto, PostsRo } from './dto/post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { RolesGuard, Roles } from './../auth/role.guard';
-
+import { GuestAuthGuard } from './../auth/guest-auth.guard';
 @ApiTags('文章')
 @Controller('post')
 export class PostsController {
@@ -48,6 +48,7 @@ export class PostsController {
   @ApiOperation({ summary: '获取文章列表' })
   @Roles('root')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(GuestAuthGuard)
   @Get('/list')
   async findAll(
     @Query() query,
