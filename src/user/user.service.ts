@@ -32,7 +32,7 @@ export class UserService {
     if (user) {
       throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
     }
-
+    createUser.accessibleUrls = [];
     const newUser = await this.userRepository.create(createUser);
     return await this.userRepository.save(newUser);
   }
